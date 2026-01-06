@@ -1,0 +1,7 @@
+.env.locale
+
+DATABASE_URL=postgresql://postgres.vrzeetthfmccwtoyahyy:LoKcMMctGNZ8tJZp@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
+PORT=8080
+JWT_SECRET=/11TwWn88hv13u7L3lTB92OWDToA37R7+MbEBR/+E/NvyaT4PaoNG7pewYICWJrgqZZgLJYF3PnyVJYf9lzB/g==
+SUPABASE_URL=https://vrzeetthfmccwtoyahyy.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyemVldHRoZm1jY3d0b3lhaHl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2MTI3MzMsImV4cCI6MjA4MzE4ODczM30.toNk5zd0JL7BlsAfZkaTJEj12JLF8-_cH1cOLv6by-0
