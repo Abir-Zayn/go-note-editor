@@ -6,6 +6,9 @@
 *.dylib
 go-auth.exe
 
+#node modules
+.node_modules/
+
 # Test binary
 *.test
 
