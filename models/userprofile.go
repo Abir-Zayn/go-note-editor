@@ -39,3 +39,9 @@ type SupabaseUser struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`
 }
+
+// SigninRequest represents the signin payload
+type SigninRequest struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}

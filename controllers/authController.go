@@ -70,3 +70,57 @@ func Signup(c *gin.Context) {
 		"refresh_token": authResp.RefreshToken,
 	})
 }
+
+func Signin(c *gin.Context) {
+	var req models.SigninRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	supabaseURL := os.Getenv("SUPABASE_URL")
+	supabaseKey := os.Getenv("SUPABASE_ANON_KEY")
+
+	payload := map[string]string{
+		"email":    req.Email,
+		"password": req.Password,
+	}
+
+	jsonPayload, _ := json.Marshal(payload)
+
+	url := fmt.Sprintf("%s/auth/v1/token?grant_type=password", supabaseURL)
+	httpReq, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonPayload))
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("apikey", supabaseKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(httpReq)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to auth service"})
+		return
+	}
+	defer resp.Body.Close()
+
+	body, _ := io.ReadAll(resp.Body)
+
+	if resp.StatusCode != http.StatusOK {
+		var errResp map[string]interface{}
+		json.Unmarshal(body, &errResp)
+		c.JSON(resp.StatusCode, errResp)
+		return
+	}
+
+	var authResp models.AuthResponse
+	json.Unmarshal(body, &authResp)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Signin successful",
+		"user": gin.H{
+			"id":    authResp.User.ID,
+			"email": authResp.User.Email,
+		},
+		"access_token":  authResp.AccessToken,
+		"refresh_token": authResp.RefreshToken,
+		"expires_in":    authResp.ExpiresIn,
+	})
+}

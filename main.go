@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go-note-editor/controllers"
-	"go-note-editor/initializers"
+"go-note-editor/controllers"
+"go-note-editor/initializers"
 
-	"github.com/gin-gonic/gin"
+"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -17,6 +17,7 @@ func main() {
 
 	// Auth routes
 	r.POST("/auth/signup", controllers.Signup)
+	r.POST("/auth/signin", controllers.Signin)
 
 	// Note routes (existing)
 	r.GET("/notes", controllers.GetAllNotes)
