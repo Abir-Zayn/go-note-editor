@@ -1,10 +1,11 @@
 package main
 
 import (
-"go-note-editor/controllers"
-"go-note-editor/initializers"
+	"go-note-editor/controllers"
+	"go-note-editor/initializers"
+	"go-note-editor/middleware"
 
-"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -15,13 +16,20 @@ func init() {
 func main() {
 	r := gin.Default()
 
-	// Auth routes
+	// Public auth routes
 	r.POST("/auth/signup", controllers.Signup)
 	r.POST("/auth/signin", controllers.Signin)
 
-	// Note routes (existing)
-	r.GET("/notes", controllers.GetAllNotes)
-	r.POST("/notes", controllers.CreateNote)
+	// Protected routes (require authentication)
+	protected := r.Group("/")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		protected.GET("/notes", controllers.GetAllNotes)
+		protected.POST("/notes", controllers.CreateNote)
+		protected.GET("/notes/:id", controllers.GetNoteByID)
+		protected.PUT("/notes/:id", controllers.UpdateNote)
+		protected.DELETE("/notes/:id", controllers.DeleteNote)
+	}
 
 	r.Run(":8080")
 }
